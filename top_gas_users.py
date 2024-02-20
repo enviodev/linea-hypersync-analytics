@@ -16,6 +16,7 @@ async def get_data():
                     hypersync.TransactionField.FROM,
                     hypersync.TransactionField.BLOCK_NUMBER,
                     hypersync.TransactionField.GAS_USED,
+                    hypersync.TransactionField.EFFECTIVE_GAS_PRICE,
                 ]
             )
         ),
@@ -26,6 +27,7 @@ async def get_data():
             column_mapping=hypersync.ColumnMapping(
                 transaction={
                     hypersync.TransactionField.GAS_USED: hypersync.DataType.FLOAT64,
+                    hypersync.TransactionField.EFFECTIVE_GAS_PRICE: hypersync.DataType.FLOAT64,
                 }
             ),
         )
@@ -39,9 +41,11 @@ def find_top_wallets():
     ).group_by(
         polars.col("from")
     ).agg(
-        polars.col(hypersync.TransactionField.GAS_USED).sum().alias("total_gas_used")
+        polars.col(hypersync.TransactionField.GAS_USED).mul(
+            polars.col(hypersync.TransactionField.EFFECTIVE_GAS_PRICE)
+        ).sum().alias("total_gas_cost")
     ).sort(
-        polars.col("total_gas_used"),
+        polars.col("total_gas_cost"),
         descending=True
     ).limit(10)
 
