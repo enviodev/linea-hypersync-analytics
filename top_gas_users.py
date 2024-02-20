@@ -7,11 +7,9 @@ DATA_PATH = "data/top_gas_users"
 async def get_data():
     client = hypersync.HypersyncClient("https://linea.hypersync.xyz")
 
-    height = await client.get_height()
-
     await client.create_parquet_folder(
         hypersync.Query(
-            from_block=height - int(1e4),
+            from_block=0,
             transactions=[hypersync.TransactionSelection()],
             field_selection=hypersync.FieldSelection(
                 transaction=[
