@@ -65,7 +65,7 @@ def plot_contract_deployment_density():
 
     renderer = hv.renderer('bokeh')
     graph = data.plot.bar(x="timestamp_datetime", y="contract_deployments")
-    renderer.save(graph, DATA_PATH = "/graph.html")
+    renderer.save(graph, DATA_PATH + "/graph.html")
 
 def main():
     asyncio.run(get_data())
