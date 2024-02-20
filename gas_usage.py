@@ -68,7 +68,7 @@ def plot_contract_deployment_density():
 
     renderer = hv.renderer('bokeh')
     graph = data.plot.bar(x="timestamp_datetime", y="total_gas_used")
-    renderer.save(graph, "graph")
+    renderer.save(graph, "data/gas_usage_graph")
 
 def main():
     asyncio.run(get_data())
